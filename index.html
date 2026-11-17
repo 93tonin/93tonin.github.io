@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>93tonin | Estante de Livros Recomendados</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background-color: #0b0f19;
+      /* Carrega a imagem local 'fundo.jpg' (recomendado subir junto no GitHub) com fallback para link direto do Drive */
+      background-image: url('fundo.jpg'), url('https://lh3.googleusercontent.com/d/1R8IzSnPhr65fdAKNgBPi8VrTDtB2MbIr');
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      color: #f8fafc;
+    }
+
+    .estante-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    /* Efeito Glassmorphism (Vidro Fosco Translúcido na medida exata) */
+    .topo-card {
+      background: rgba(15, 23, 42, 0.58);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(253, 224, 71, 0.28);
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .topo-perfil {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .topo-bio {
+      flex-grow: 1;
+      border-left: 1px solid rgba(253, 224, 71, 0.25);
+      padding-left: 20px;
+    }
+
+    .secao-titulo {
+      font-family: 'Cinzel', 'Georgia', serif;
+      text-align: center;
+      color: #fef08a;
+      font-weight: 700;
+      font-size: 24px;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(253, 224, 71, 0.25);
+      border-radius: 12px;
+      padding: 12px 20px;
+      margin: 0 auto 26px auto;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Layout de Lista Rica com Glassmorphism */
+    .livros-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 16px;
+    }
+
+    .livro-card {
+      background: rgba(15, 23, 42, 0.58);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(253, 224, 71, 0.25);
+      border-radius: 15px;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .livro-card:hover {
+      transform: translateY(-2px);
+      background: rgba(15, 23, 42, 0.68);
+      border-color: rgba(253, 224, 71, 0.5);
+    }
+
+    .livro-capa {
+      width: 95px;
+      height: 135px;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid rgba(253, 224, 71, 0.25);
+      flex-shrink: 0;
+    }
+
+    .livro-capa img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .livro-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-grow: 1;
+      height: 100%;
+    }
+
+    .livro-titulo {
+      font-family: 'Cinzel', 'Georgia', serif;
+      font-size: 16.5px;
+      color: #fde047;
+      margin: 0 0 6px 0;
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+    }
+
+    .livro-desc {
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      font-size: 13.5px;
+      color: #f1f5f9;
+      margin: 0 0 12px 0;
+      line-height: 1.45;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .livro-btn {
+      display: inline-block;
+      background-color: #ffd814;
+      color: #0f172a;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 13px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(255, 216, 20, 0.35);
+      width: fit-content;
+      transition: background-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .livro-btn:hover {
+      background-color: #facc15;
+      transform: scale(1.03);
+    }
+
+    @media (max-width: 600px) {
+      .estante-container { padding: 12px 8px; }
+      .topo-card { padding: 16px; margin-bottom: 18px; }
+      .topo-perfil { flex-direction: column; text-align: center; gap: 14px; }
+      .topo-bio { border-left: none; border-top: 1px solid rgba(253, 224, 71, 0.25); padding-left: 0; padding-top: 14px; }
+      .secao-titulo { font-size: 20px; padding: 10px 14px; }
+      .livros-grid { grid-template-columns: 1fr; gap: 12px; }
+      .livro-card { padding: 14px; gap: 14px; }
+      .livro-capa { width: 90px; height: 125px; }
+      .livro-titulo { font-size: 16px; }
+      .livro-desc { font-size: 13px; line-height: 1.4; margin-bottom: 10px; }
+      .livro-btn { font-size: 12.5px; padding: 7px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="estante-container">
+    <div class="topo-card">
+      <div class="topo-perfil">
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; flex-shrink: 0;">
+          <img src="https://lh3.googleusercontent.com/d/19G0Bett0Q5bxu86rjeeSpefL0584oW0A" alt="Antonio" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid #fde047; margin-bottom: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+          <h3 style="font-family: 'Cinzel', 'Georgia', serif; color: #fde047; font-size: 15px; margin: 0; font-weight: 700;">Antonio</h3>
+        </div>
+        <div class="topo-bio">
+          <p style="font-family: 'Segoe UI', Roboto, sans-serif; font-size: 14px; color: #f1f5f9; margin: 0; line-height: 1.55; text-shadow: 0 1px 3px rgba(0,0,0,0.7);">
+            Salve, seja bem-vindo! Sou o Antonio. Sempre fui fascinado por entender como o mundo funciona, o que nos move, por que a sociedade age do jeito que age, por que existimos no meio do caos e para onde vamos. Criei este espaço para reunir as leituras que moldaram minha visão, passando por clássicos intemporais e análises sem filtro da realidade. Puxe uma cadeira, explore as referências e aproveite a viagem.
+          </p>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: center; align-items: center; gap: 18px; margin-top: 18px; border-top: 1px solid rgba(253, 224, 71, 0.25); padding-top: 16px;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+          <a href="https://open.spotify.com/playlist/6QgAnc8fDxtZP6TsvcbO2X?si=xRL3i5p7Q--y1b6MGST-OQ" target="_blank" title="Minha Playlist no Spotify" style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; background-color: #1DB954; color: #ffffff; border-radius: 50%; text-decoration: none; box-shadow: 0 4px 10px rgba(29, 185, 84, 0.35);">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm5.521 17.341c-.218.358-.684.474-1.042.256-2.854-1.744-6.447-2.139-10.677-1.173-.404.093-.811-.161-.904-.564-.093-.403.161-.81.564-.903 4.636-1.06 8.607-.604 11.799 1.342.357.218.473.684.26 1.042zm1.474-3.277c-.274.446-.858.587-1.303.313-3.266-2.008-8.246-2.59-12.11-1.417-.5.152-1.031-.131-1.183-.631-.153-.5.131-1.03.63-1.182 4.412-1.339 9.897-.692 13.653 1.615.445.274.587.858.313 1.302zm.127-3.413C15.228 8.487 8.8 8.274 5.12 9.39c-.588.178-1.214-.158-1.393-.745-.178-.588.158-1.214.746-1.393 4.232-1.285 11.332-1.041 15.719 1.564.53.314.707 1.002.393 1.531-.314.53-1.001.706-1.531.393z"/></svg>
+          </a>
+          <span style="font-size: 11px; color: #e2e8f0;">Playlist</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+          <a href="https://linktr.ee/93tonin" target="_blank" title="Meu Linktree" style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; background-color: #39E09B; color: #0f172a; border-radius: 50%; text-decoration: none; box-shadow: 0 4px 10px rgba(57, 224, 155, 0.35);">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M13.511 5.853l3.963-3.963 1.83 1.83-3.963 3.963 4.706 4.706-1.83 1.83-3.327-3.327v7.242h-2.588V8.722l-3.327 3.327-1.83-1.83 4.706-4.706-3.963-3.963 1.83-1.83 3.963 3.963V0h2.588v5.853zm-2.588 12.28h2.588V24h-2.588v-5.867z"/></svg>
+          </a>
+          <span style="font-size: 11px; color: #e2e8f0;">Redes</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="secao-titulo">Minha Estante de Livros Recomendados</h2>
+    
+    <div class="livros-grid">
+      <!-- 1 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/W/BW_MEDIAX_AVIF_MEASUREMENT_1306696-T4/images/I/81rRNf099vL._SL1500_.jpg" alt="Meditações"></div><div class="livro-info"><div><h3 class="livro-titulo">Meditações</h3><p class="livro-desc">Reflexões íntimas e lições estoicas do imperador romano sobre dever, serenidade e autocontrole.</p></div><a href="https://link.amazon/B06gIkBcI" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 2 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/W/BW_MEDIAX_AVIF_MEASUREMENT_1306696-T4/images/I/71XC87bA64L._SL1101_.jpg" alt="O livro de Enoque"></div><div class="livro-info"><div><h3 class="livro-titulo">O livro de Enoque</h3><p class="livro-desc">Textos apócrifos fascinantes sobre segredos celestiais, anjos caídos e o Testamento de Salomão.</p></div><a href="https://link.amazon/B0aVMCIfZ" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 3 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/71F-Uf20+UL._SL1000_.jpg" alt="Noites Brancas"></div><div class="livro-info"><div><h3 class="livro-titulo">Noites Brancas</h3><p class="livro-desc">Dostoiévski mostrando como a solidão e a expectativa de um grande amor podem mexer com a nossa cabeça.</p></div><a href="https://link.amazon/B08W0BrPg" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 4 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/61+cCiPBnWL._SL1360_.jpg" alt="O Alienista"></div><div class="livro-info"><div><h3 class="livro-titulo">O Alienista</h3><p class="livro-desc">Machado de Assis sendo genial ao mostrar como é fácil uma pessoa normal ser considerada louca.</p></div><a href="https://link.amazon/B07VoXicp" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 5 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/91BsZhxCRjL._SL1500_.jpg" alt="A Revolução dos Bichos"></div><div class="livro-info"><div><h3 class="livro-titulo">A Revolução dos Bichos</h3><p class="livro-desc">Uma crítica pesada e super atual sobre como a busca pelo poder pode corromper qualquer discurso.</p></div><a href="https://link.amazon/B05Jrqh5x" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 6 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/91mYAMQ785L._SL1500_.jpg" alt="Confissões de Santo Agostinho"></div><div class="livro-info"><div><h3 class="livro-titulo">Confissões de Santo Agostinho</h3><p class="livro-desc">Um mergulho honesto nos dilemas, fraquezas e na jornada pessoal de um dos maiores pensadores.</p></div><a href="https://link.amazon/B0hW1192P" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 7 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/A1bFiBBPWFS._SL1500_.jpg" alt="Senhor das Moscas"></div><div class="livro-info"><div><h3 class="livro-titulo">Senhor das Moscas</h3><p class="livro-desc">O que acontece quando a civilização some e a convivência vira uma luta pelo controle? Tenso.</p></div><a href="https://link.amazon/B0dHbLuN5" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 8 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/71cUnD-zUZL._SL1500_.jpg" alt="Lições de Metafísica"></div><div class="livro-info"><div><h3 class="livro-titulo">Lições de Metafísica</h3><p class="livro-desc">Para quem quer questionar o óbvio e entender a realidade sob uma visão filosófica profunda.</p></div><a href="https://link.amazon/B0hQuDS7T" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 9 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/819Dfe6lvoS._SL1499_.jpg" alt="Duas Viagens ao Brasil"></div><div class="livro-info"><div><h3 class="livro-titulo">Duas Viagens ao Brasil</h3><p class="livro-desc">Relatos de aventura pura e sobrevivência em um Brasil totalmente selvagem. Leitura marcante.</p></div><a href="https://link.amazon/B09BaqFBd" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 10 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/71ekmRE3o2L._SL1000_.jpg" alt="A Psicologia da Estupidez"></div><div class="livro-info"><div><h3 class="livro-titulo">A Psicologia da Estupidez</h3><p class="livro-desc">Um olhar direto sobre por que agimos de forma irresponsável e por que a estupidez é comum.</p></div><a href="https://link.amazon/B0cx9V35t" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 11 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/914+e3AkEqL._SL1500_.jpg" alt="Como Falar, Como Ouvir"></div><div class="livro-info"><div><h3 class="livro-titulo">Como Falar, Como Ouvir</h3><p class="livro-desc">Dicas práticas para melhorar suas conversas diárias, saber se expressar e entender o outro.</p></div><a href="https://link.amazon/B089VzrwP" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 12 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/71+TaG9e0dL._SY466_.jpg" alt="O Império do Bem"></div><div class="livro-info"><div><h3 class="livro-titulo">O Império do Bem</h3><p class="livro-desc">Uma provocação necessária sobre o politicamente correto e como certas regras travam o debate.</p></div><a href="https://link.amazon/B0bs899hr" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 13 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/81fzyI8i+vL._SL1500_.jpg" alt="A Rebelião das Massas"></div><div class="livro-info"><div><h3 class="livro-titulo">A Rebelião das Massas</h3><p class="livro-desc">Um diagnóstico cirúrgico sobre a mentalidade coletiva e o impacto da cultura de massa.</p></div><a href="https://link.amazon/B00lXzRAk" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 14 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/710hGVSv5kL._SL1329_.jpg" alt="Cidade de Deus"></div><div class="livro-info"><div><h3 class="livro-titulo">Cidade de Deus (Vol. Único)</h3><p class="livro-desc">Uma leitura densa e marcante que contrasta a busca pelas coisas humanas com valores espirituais.</p></div><a href="https://link.amazon/B04sra7UX" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 15 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/81QluJ4QXyL._SL1500_.jpg" alt="O Pequeno Príncipe"></div><div class="livro-info"><div><h3 class="livro-titulo">O Pequeno Príncipe (Ed. Luxo)</h3><p class="livro-desc">Aquele livro curtinho que todo mundo deveria ler pelo menos uma vez. Simples, mas profundo.</p></div><a href="https://link.amazon/B04ch3PFi" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 16 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/81u+t+bRSoL._SL1360_.jpg" alt="O Morro dos Ventos Uivantes"></div><div class="livro-info"><div><h3 class="livro-titulo">O Morro dos Ventos Uivantes</h3><p class="livro-desc">Uma história intensa de amor obsessivo, vingança e fantasmas na charneca fria.</p></div><a href="https://link.amazon/B03XneeZO" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 17 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/71Xw-t2GVxL._SL1200_.jpg" alt="A Arte da Guerra"></div><div class="livro-info"><div><h3 class="livro-titulo">A Arte da Guerra</h3><p class="livro-desc">Estratégias milenares de Sun Tzu aplicadas para vencer conflitos diários e alcançar objetivos.</p></div><a href="https://link.amazon/B02qpd6S4" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 18 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/71Hr1-by3UL._SL1500_.jpg" alt="Ensaio sobre a Cegueira"></div><div class="livro-info"><div><h3 class="livro-titulo">Ensaio sobre a Cegueira</h3><p class="livro-desc">Saramago mostrando o que acontece com a moral quando uma epidemia tira a visão de todos.</p></div><a href="https://link.amazon/B0ejL373Y" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 19 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/71y6PXksURL._SL1500_.jpg" alt="Memórias Póstumas"></div><div class="livro-info"><div><h3 class="livro-titulo">Memórias Póstumas</h3><p class="livro-desc">Um defunto autor debochado contando as verdades mais cruéis e irônicas sobre a vida.</p></div><a href="https://link.amazon/B0czi1Eu9" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 20 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/71Gmavgu3ZL._SL1500_.jpg" alt="Crime e Castigo"></div><div class="livro-info"><div><h3 class="livro-titulo">Crime e Castigo</h3><p class="livro-desc">A mente de um ex-estudante em colapso total após cometer um crime, esmagada pela culpa.</p></div><a href="https://link.amazon/B0dzhwxRf" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 21 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/61kIG+4RESL._SL1500_.jpg" alt="Vidas Secas"></div><div class="livro-info"><div><h3 class="livro-titulo">Vidas Secas</h3><p class="livro-desc">A luta bruta e comovente de uma família nordestina fugindo da seca extrema e da miséria.</p></div><a href="https://link.amazon/B04AKuK0q" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 22 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/71l4iPpjynL._SL1500_.jpg" alt="O Alienista"></div><div class="livro-info"><div><h3 class="livro-titulo">O Alienista</h3><p class="livro-desc">Machado de Assis sendo genial ao mostrar como é fácil uma pessoa normal ser considerada louca.</p></div><a href="https://link.amazon/B0fpz521M" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 23 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/812BaW4MacL._SL1500_.jpg" alt="O Príncipe"></div><div class="livro-info"><div><h3 class="livro-titulo">O Príncipe</h3><p class="livro-desc">O manual clássico e direto de Maquiavel sobre como conquistar e manter o poder político.</p></div><a href="https://link.amazon/B050Jt7d4" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 24 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/51Dq8wX5bQL._SL1500_.jpg" alt="The Doctrines of Fascism"></div><div class="livro-info"><div><h3 class="livro-titulo">The Doctrines of Fascism</h3><p class="livro-desc">Um registro histórico e documental sobre as bases ideológicas e políticas do movimento.</p></div><a href="https://link.amazon/B0blIHfj6" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 25 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/61MxLc9JQWL._SL1280_.jpg" alt="Ação Humana"></div><div class="livro-info"><div><h3 class="livro-titulo">Ação Humana</h3><p class="livro-desc">Ludwig von Mises explicando os fundamentos lógicos da economia e da escolha humana.</p></div><a href="https://link.amazon/B03MfDoeQ" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+      <!-- 26 --> <div class="livro-card"><div class="livro-capa"><img src="https://m.media-amazon.com/images/I/61qFTbQ8BWL._SL1303_.jpg" alt="Democracia, o Deus que falhou"></div><div class="livro-info"><div><h3 class="livro-titulo">Democracia, o Deus que falhou</h3><p class="livro-desc">Uma crítica ácida de Hans-Hermann Hoppe contra os mitos do sistema democrático moderno.</p></div><a href="https://link.amazon/B00z43J6V" target="_blank" class="livro-btn">Comprar na Amazon</a></div></div>
+    </div>
+  </div>
+</body>
+</html>
